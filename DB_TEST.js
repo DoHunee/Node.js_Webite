@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
  
 connection.connect();
  
-connection.query('SELECT * from USER where id="1"', function (error, results, fields) {
+connection.query('SELECT * from contact ', function (error, results, fields) {
   if (error) throw error;
   console.log('users: ', results);
 });
