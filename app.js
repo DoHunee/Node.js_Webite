@@ -25,18 +25,18 @@ app.use('/uploads', express.static('uploads')); // 이 부분이 있어야 관�
 
 app.use(session({ secret: 'unidago', cookie: { maxAge: 60000 }, resave:true, saveUninitialized:true, }))
 
-// app.use((req, res, next) => {    
+app.use((req, res, next) => {    
 
 
-//   res.locals.user_id = "";
-//   res.locals.name = "";
+  res.locals.user_id = "";
+  res.locals.name = "";
 
-//   if(req.session.member){ 
-//      res.locals.user_id = req.session.member.user_id 
-//      res.locals.name = req.session.member.name 
-//   }
-//   next()
-// })
+  if(req.session.member){ 
+     res.locals.user_id = req.session.member.user_id 
+     res.locals.name = req.session.member.name 
+  }
+  next()
+})
 
 
 // 기본 페이지를 index로 설정!
