@@ -170,11 +170,9 @@ app.post('/loginProc', (req, res) => {
       
       if(result.length==0){
         res.send("<script> alert('존재하지 않는 아이디입니다..'); location.href='/login';</script>");          
-      }else{  
-        console.log(result); 
-        
+      }else{
+        // res.send는 무조건 하나만!!
         res.send("<script> alert('로그인 되었습니다.'); location.href='/';</script>");          
-        //res.send(result); 
       }
   })
 
