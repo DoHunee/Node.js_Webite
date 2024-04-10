@@ -5,6 +5,7 @@ const app = express()
 const port = 3000
 var bodyParser = require('body-parser')
 const path = require('path');
+// const session = require('express-session');
 
 require('dotenv').config()
 
@@ -14,8 +15,6 @@ const mysql = require('mysql2')
 const connection = mysql.createConnection(process.env.DATABASE_URL)
 console.log('Connected to PlanetScale!')
 
-
-
 app.set('view engine','ejs')
 app.set('views','./views')
 
@@ -23,6 +22,21 @@ app.set('views','./views')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/images',express.static('images')); // images 디렉토리를 애플리케이션의 정적 파일을 제공하는 디렉토리로 설정
 app.use('/uploads', express.static('uploads')); // 이 부분이 있어야 관리자에서 이미지 제대로 뜬다!!
+
+// app.use(session({ secret: 'unidago', cookie: { maxAge: 60000 }, resave:true, saveUninitialized:true, }))
+
+// app.use((req, res, next) => {    
+
+
+//   res.locals.user_id = "";
+//   res.locals.name = "";
+
+//   if(req.session.member){ 
+//      res.locals.user_id = req.session.member.user_id 
+//      res.locals.name = req.session.member.name 
+//   }
+//   next()
+// })
 
 
 // 기본 페이지!!
@@ -123,6 +137,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
   });
 });
 
+// 이미지 보기!
 app.get('/adminFiles', (req, res) => {
   const sql = "SELECT * FROM files"; // 모든 파일 메타데이터 조회
 
@@ -136,6 +151,44 @@ app.get('/adminFiles', (req, res) => {
     res.render('adminFiles', { files });
   });
 });
+
+
+// app.get('/login', (req, res) => {
+//   res.render('login')  
+// })
+
+
+// app.post('/loginProc', (req, res) => {
+//   const user_id = req.body.user_id; 
+//   const pw = req.body.pw; 
+
+//   var sql = `select * from member  where user_id=? and pw=? `
+
+//   var values = [user_id, pw]; 
+
+//   connection.query(sql, values, function (err, result){
+//       if(err) throw err;      
+      
+//       if(result.length==0){
+//         res.send("<script> alert('존재하지 않는 아이디입니다..'); location.href='/login';</script>");          
+//       }else{  
+//         console.log(result); 
+//         console.log(result[0]); 
+
+//         req.session.member = result[0]  
+//         res.send("<script> alert('로그인 되었습니다.'); location.href='/';</script>");          
+//         //res.send(result); 
+//       }
+//   })
+
+// })
+
+
+
+// app.get('/logout', (req, res) => {
+//   req.session.member = null; 
+//   res.send("<script> alert('로그아웃 되었습니다.'); location.href='/';</script>");          
+// })
 
 
 app.listen(port, () => {

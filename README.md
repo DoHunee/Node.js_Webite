@@ -6,3 +6,4 @@ npm install dotenv
 npm install mysql --save
 npm install mysql2
 npm install multer 
+npm install express-session
