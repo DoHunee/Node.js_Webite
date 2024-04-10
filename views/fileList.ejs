@@ -1,0 +1,35 @@
+<%- include('header.ejs') %>
+
+<h1>문의받은 내용들</h1>
+
+<table border="1">
+    <tr>
+        <th>idx</th>
+        <th>성명</th>
+        <th>연락처</th>
+        <th>이메일</th>
+        <th>문의내용</th>
+        <th>등록일</th>
+        <th>파일</th>
+        <th>삭제</th>
+    </tr>
+
+    <% lists.forEach(function(item) { %>
+    <tr>
+        <td><%= item.idx %></td>
+        <td><%= item.name %></td>
+        <td><%= item.phone %></td>
+        <td><%= item.email %></td>
+        <td><%- item.memo.replace(/\n/g, "<br>") %></td>
+        <td><%= item.regdate %></td>
+        <td>
+            <% if (item.filename) { %>
+                <a href="/uploads/<%= item.filename %>" target="_blank">파일 보기</a>
+            <% } else { %>
+                없음
+            <% } %>
+        </td>
+        <td><a href="/fileDelete?idx=<%= item.idx %>" onclick="return confirm('정말 삭제할까요?')">삭제</a></td>
+    </tr>
+    <% }) %>
+</table>

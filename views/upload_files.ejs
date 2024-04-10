@@ -1,0 +1,17 @@
+<%- include('header.ejs') %>
+
+<!-- 문의하기 및 파일 업로드 통합 폼 -->
+<h3>위험 사항 업로드</h3>
+<form action="/upload_files" method="post" enctype="multipart/form-data">
+    <ul>
+        <li>문의하기</li>
+        <li>이름 : <input type="text" name="name" required></li>
+        <li>연락처 : <input type="text" name="phone" required></li>
+        <li>이메일 : <input type="text" name="email" required></li>
+        <li>내용 :<br>
+        <textarea name="memo" cols="50" rows="10"></textarea></li>
+        <li>파일 선택 :<br>
+        <input type="file" name="file" accept="image/*,video/*"></li>
+        <button type="submit">제출하기</button>
+    </ul>
+</form>
