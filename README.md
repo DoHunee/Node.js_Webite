@@ -1,4 +1,4 @@
-## 실행 환경 세팅>
+## 실행 환경 세팅
 npm install express </br>
 npm install ejs </br>
 npm install body-parser </br> 
