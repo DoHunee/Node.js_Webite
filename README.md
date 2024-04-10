@@ -2,10 +2,11 @@
 npm install express </br>
 npm install ejs </br>
 npm install body-parser </br> 
-npm install dotenv
-npm install mysql --save
-npm install mysql2
-npm install dotenv mssql     
+npm install dotenv </br> 
+npm install mysql --save </br> 
+npm install mysql2 </br> 
+npm install dotenv mssql </br>     
 npm install multer </br>
 npm install express-session </br>
+
 
