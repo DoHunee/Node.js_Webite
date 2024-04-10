@@ -5,3 +5,4 @@ npm install body-parser
 npm install dotenv
 npm install mysql --save
 npm install mysql2
+npm install multer 

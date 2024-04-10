@@ -22,6 +22,7 @@ app.set('views','./views')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static('public')); // 정적 파일 제공을 위한 미들웨어 설정
+app.use('/uploads', express.static('uploads')); //이 부분이 있어야 관리자에서 이미지 제대로 뜬다!!
 
 
 // 기본 페이지!!
@@ -35,7 +36,7 @@ app.get('/profile', (req,res) => {
 
 app.get('/map', (req,res) => {
   res.render("map")  
-})+
+})
 
 app.get('/contact', (req,res) => {
   res.render("contact")  
@@ -81,12 +82,41 @@ app.get('/upload', (req, res) => {
 });
 
 // POST 요청을 처리하는 라우트
+// 업로드 된 이미지나 동영상의 메타데이터를 files DB에 저장!
 app.post('/upload', upload.single('file'), (req, res) => {
-  // 업로드된 파일 정보는 req.file 에 있음
-  console.log(req.file);
+  const file = req.file; // 업로드된 파일 정보
+  const filepath = file.path; // 파일이 저장된 서버 상의 경로
+  const filename = file.filename; // 저장된 파일명
 
-  res.send('파일이 업로드되었습니다.');
+  // 파일 메타데이터를 데이터베이스에 저장하는 쿼리
+  const sql = "INSERT INTO files (filename, filepath) VALUES (?, ?)";
+  const values = [filename, filepath];
+
+  // 데이터베이스 쿼리 실행
+  connection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('데이터베이스 오류 발생:', err);
+      return res.status(500).send("파일 메타데이터를 데이터베이스에 저장하는 데 실패했습니다.");
+    }
+    console.log('파일 메타데이터가 데이터베이스에 성공적으로 저장되었습니다.');
+    res.send('<script>alert("파일이 업로드되었으며, 메타데이터가 데이터베이스에 저장되었습니다."); location.href="/";</script>');
+  });
 });
+
+app.get('/adminFiles', (req, res) => {
+  const sql = "SELECT * FROM files"; // 모든 파일 메타데이터 조회
+
+  connection.query(sql, (err, files) => {
+    if (err) {
+      console.error('오류 발생:', err);
+      return res.status(500).send("파일 목록을 불러오는 데 실패했습니다.");
+    }
+
+    // 'adminFiles.ejs' 템플릿을 사용하여 파일 목록 렌더링
+    res.render('adminFiles', { files });
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`서버가 실행되었습니다. 접속주소 : http://localhost:${port}`);
