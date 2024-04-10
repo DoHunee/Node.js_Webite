@@ -39,7 +39,7 @@ app.use('/uploads', express.static('uploads')); // 이 부분이 있어야 관�
 // })
 
 
-// 기본 페이지!!
+// 기본 페이지를 index로 설정!
 app.get('/', (req, res) => {
   res.render('index')   // ./views/index.ejs  
 })
@@ -153,42 +153,40 @@ app.get('/adminFiles', (req, res) => {
 });
 
 
-// app.get('/login', (req, res) => {
-//   res.render('login')  
-// })
+app.get('/login', (req, res) => {
+  res.render('login')  
+})
 
+app.post('/loginProc', (req, res) => {
+  const user_id = req.body.user_id; 
+  const pw = req.body.pw; 
 
-// app.post('/loginProc', (req, res) => {
-//   const user_id = req.body.user_id; 
-//   const pw = req.body.pw; 
+  var sql = `select * from member  where user_id=? and pw=? `
 
-//   var sql = `select * from member  where user_id=? and pw=? `
+  var values = [user_id, pw]; 
 
-//   var values = [user_id, pw]; 
-
-//   connection.query(sql, values, function (err, result){
-//       if(err) throw err;      
+  connection.query(sql, values, function (err, result){
+      if(err) throw err;      
       
-//       if(result.length==0){
-//         res.send("<script> alert('존재하지 않는 아이디입니다..'); location.href='/login';</script>");          
-//       }else{  
-//         console.log(result); 
-//         console.log(result[0]); 
+      if(result.length==0){
+        res.send("<script> alert('존재하지 않는 아이디입니다..'); location.href='/login';</script>");          
+      }else{  
+        console.log(result); 
+        
+        res.send("<script> alert('로그인 되었습니다.'); location.href='/';</script>");          
+        //res.send(result); 
+      }
+  })
 
-//         req.session.member = result[0]  
-//         res.send("<script> alert('로그인 되었습니다.'); location.href='/';</script>");          
-//         //res.send(result); 
-//       }
-//   })
-
-// })
+})
 
 
 
-// app.get('/logout', (req, res) => {
-//   req.session.member = null; 
-//   res.send("<script> alert('로그아웃 되었습니다.'); location.href='/';</script>");          
-// })
+
+app.get('/logout', (req, res) => {
+  req.session.member = null; 
+  res.send("<script> alert('로그아웃 되었습니다.'); location.href='/';</script>");          
+})
 
 
 app.listen(port, () => {
