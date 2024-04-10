@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
   res.render('index')   // ./views/index.ejs  
 })
 
-
+// 업로드 한 파일 삭제!
 app.get('/fileDelete', (req, res) => {
   var idx = req.query.idx 
   var sql = `delete from upload_files where idx='${idx}' `
