@@ -21,8 +21,8 @@ app.set('views','./views')
 
 
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static('public')); // 정적 파일 제공을 위한 미들웨어 설정
-app.use('/uploads', express.static('uploads')); //이 부분이 있어야 관리자에서 이미지 제대로 뜬다!!
+app.use('/images',express.static('images')); // images 디렉토리를 애플리케이션의 정적 파일을 제공하는 디렉토리로 설정
+app.use('/uploads', express.static('uploads')); // 이 부분이 있어야 관리자에서 이미지 제대로 뜬다!!
 
 
 // 기본 페이지!!
@@ -60,6 +60,26 @@ app.post('/contactProc', (req, res) => {
     res.send("<script>alert('문의사항이 등록되었습니다.'); location.href='/';</script>");
   });
 });
+
+app.get('/contactDelete', (req, res) => {
+  var idx = req.query.idx 
+  var sql = `delete from contact where idx='${idx}' `
+  connection.query(sql, function (err, result){
+     if(err) throw err; 
+     
+     res.send("<script> alert('삭제되었습니다.'); location.href='/contactList';</script>"); 
+ })
+})
+
+app.get('/contactList', (req, res) => {
+
+  var sql = `select * from contact order by idx desc `
+  connection.query(sql, function (err, results, fields){
+     if(err) throw err; 
+     res.render('contactList',{lists:results})
+  })
+  
+})
 
 
 
