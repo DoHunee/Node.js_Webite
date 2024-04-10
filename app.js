@@ -5,7 +5,7 @@ const app = express()
 const port = 3000
 var bodyParser = require('body-parser')
 const path = require('path');
-// const session = require('express-session');
+const session = require('express-session');
 
 require('dotenv').config()
 
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/images',express.static('images')); // images 디렉토리를 애플리케이션의 정적 파일을 제공하는 디렉토리로 설정
 app.use('/uploads', express.static('uploads')); // 이 부분이 있어야 관리자에서 이미지 제대로 뜬다!!
 
-// app.use(session({ secret: 'unidago', cookie: { maxAge: 60000 }, resave:true, saveUninitialized:true, }))
+app.use(session({ secret: 'unidago', cookie: { maxAge: 60000 }, resave:true, saveUninitialized:true, }))
 
 // app.use((req, res, next) => {    
 
@@ -94,7 +94,6 @@ app.get('/contactList', (req, res) => {
   })
   
 })
-
 
 
 // Multer 설정: 업로드된 파일을 'uploads' 폴더에 저장
@@ -170,14 +169,15 @@ app.post('/loginProc', (req, res) => {
       
       if(result.length==0){
         res.send("<script> alert('존재하지 않는 아이디입니다..'); location.href='/login';</script>");          
-      }else{
-        // res.send는 무조건 하나만!!
+      }else{  
+        console.log(result[0]); 
+
+        req.session.member = result[0]  
         res.send("<script> alert('로그인 되었습니다.'); location.href='/';</script>");          
       }
   })
 
 })
-
 
 
 
